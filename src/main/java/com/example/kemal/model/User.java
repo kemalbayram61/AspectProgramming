@@ -1,7 +1,14 @@
 package com.example.kemal.model;
 
+import com.example.kemal.annotation.DataLifeCycle;
+
 public class User {
+    @DataLifeCycle(
+            allowedDBs = {"ORACLE"},
+            allowedTables = {"USER"}
+    )
     private String username;
+    @DataLifeCycle()
     private String password;
     private String email;
     private String phoneNumber;

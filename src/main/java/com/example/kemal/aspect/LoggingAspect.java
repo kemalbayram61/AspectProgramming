@@ -17,4 +17,6 @@ public class LoggingAspect {
     public void logAfterControllerMethods() {
         System.out.println("\u001B[32mControllerda metot çağrıldı.\u001B[0m");
     }
+
+
 }
