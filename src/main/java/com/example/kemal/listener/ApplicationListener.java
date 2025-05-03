@@ -20,28 +20,28 @@ public class ApplicationListener {
         classNames.forEach(this::cacheIfObjectIsDataLifeCycle);
     }
 
-private void cacheIfObjectIsDataLifeCycle(String className) {
-    try {
-        Class<?> clazz = Class.forName(className);
-        boolean hasAnnotation = false;
+    private void cacheIfObjectIsDataLifeCycle(String className) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            boolean hasAnnotation = false;
 
-        if (clazz.isAnnotationPresent(DataLifeCycle.class)) {
-            hasAnnotation = true;
-            System.out.println("\u001B[33m" + className + " sınıfı DataLifeCycle anotasyonuna sahiptir.\u001B[0m");
-        }
-
-        for (var field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(DataLifeCycle.class)) {
+            if (clazz.isAnnotationPresent(DataLifeCycle.class)) {
                 hasAnnotation = true;
-                System.out.println("\u001B[33m" + className + " sınıfındaki " + field.getName() + " alanı DataLifeCycle anotasyonuna sahiptir.\u001B[0m");
+                System.out.println("\u001B[33m" + className + " sınıfı DataLifeCycle anotasyonuna sahiptir.\u001B[0m");
             }
-        }
 
-        if (!hasAnnotation) {
-            System.out.println("\u001B[31m" + className + " sınıfı veya alanları DataLifeCycle anotasyonuna sahip değildir.\u001B[0m");
+            for (var field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(DataLifeCycle.class)) {
+                    hasAnnotation = true;
+                    System.out.println("\u001B[33m" + className + " sınıfındaki " + field.getName() + " alanı DataLifeCycle anotasyonuna sahiptir.\u001B[0m");
+                }
+            }
+
+            if (!hasAnnotation) {
+                System.out.println("\u001B[31m" + className + " sınıfı veya alanları DataLifeCycle anotasyonuna sahip değildir.\u001B[0m");
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("\u001B[31m" + className + " sınıfı bulunamadı.\u001B[0m");
         }
-    } catch (ClassNotFoundException e) {
-        System.out.println("\u001B[31m" + className + " sınıfı bulunamadı.\u001B[0m");
     }
-}
 }
