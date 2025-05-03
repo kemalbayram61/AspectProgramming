@@ -18,7 +18,8 @@ public class QueryCallerAspect {
     @Before("execution(* com.example.kemal.caller.QueryCaller.executeUpdate(..))")
     public void beforeUpdateQuery() {
         if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
-            System.out.println("\u001B[32mCache doğrulanmış alan kontrolü.\u001B[0m");
+            if(cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).getNativeCache().toString().contains("true"))
+                throw new RuntimeException("DataLifeCycle annotasyonu istenilmeyen bir şekilde insert edilmeye çalışılıyor.");
         }
     }
 
