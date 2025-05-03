@@ -1,11 +1,23 @@
 package com.example.kemal.dao;
 
+import com.example.kemal.caller.QueryCaller;
 import com.example.kemal.model.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserDao {
-    // This class is responsible for data access operations related to User
-    // It can include methods for CRUD operations, database connections, etc.
+
+    private final QueryCaller queryCaller;
+
+    public UserDao(QueryCaller queryCaller) {
+        this.queryCaller = queryCaller;
+    }
 
     public void saveUser(User user) {
+        String query = "INSERT INTO users (name, age) VALUES (?, ?)";
+        queryCaller.setStringParam(user.getUsername());
+        queryCaller.setIntParam(user.getAge());
+        queryCaller.executeUpdate(query);
+        System.out.println("User saved: " + user);
     }
 }

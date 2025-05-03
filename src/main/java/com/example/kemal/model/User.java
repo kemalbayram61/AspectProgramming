@@ -1,27 +1,21 @@
 package com.example.kemal.model;
 
 import com.example.kemal.annotation.DataLifeCycle;
+import org.springframework.stereotype.Component;
 
+@Component
 public class User {
-    @DataLifeCycle(
-            allowedDBs = {"ORACLE"},
-            allowedTables = {"USER"}
-    )
     private String username;
-    @DataLifeCycle()
     private String password;
+    private Integer age;
     private String email;
     private String phoneNumber;
     private boolean isActive;
 
-    public User(String username, String password, String email, String phoneNumber, boolean isActive) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.isActive = isActive;
-    }
-
+    @DataLifeCycle(
+            allowedDBs = {"ORACLE"},
+            allowedTables = {"USER"}
+    )
     public String getUsername() {
         return username;
     }
@@ -60,5 +54,17 @@ public class User {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @DataLifeCycle(
+            allowedDBs = {"ORACLE"},
+            allowedTables = {"USER"}
+    )
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }
