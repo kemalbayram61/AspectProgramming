@@ -1,5 +1,6 @@
 package com.example.kemal.controller;
 
+import com.example.kemal.mock.MockGenerator;
 import com.example.kemal.model.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ public class TestController {
 
     @GetMapping("/user")
     public User getUser(){
-
+        return MockGenerator.getMockUser();
     }
 
 }
