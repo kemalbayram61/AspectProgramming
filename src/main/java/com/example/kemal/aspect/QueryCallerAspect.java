@@ -15,6 +15,7 @@ public class QueryCallerAspect {
     @Autowired
     private CacheManager cacheManager;
 
+    // Sorgu çalıştırılmadan önce DataLifeCycle annotasyonlu field kullanılmış mı teyit eiliyor
     @Before("execution(* com.example.kemal.caller.QueryCaller.executeUpdate(..))")
     public void beforeUpdateQuery() {
         if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
@@ -25,15 +26,18 @@ public class QueryCallerAspect {
 
     @Before("execution(* com.example.kemal.caller.QueryCaller.setStringParam(..))")
     public void beforeSetStringParam(JoinPoint joinPoint) {
+        // Field referansına yakın bir değer ile doğrulama yapılıyor
         if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
             Object param = joinPoint.getArgs()[0];
-            cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(System.identityHashCode(param), true);
+            if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).get(System.identityHashCode(param)) != null)
+                cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(System.identityHashCode(param), true);
         }
 
+        // StackTraceElement ile çağrım yapılan konum üzerinden doğrulama yapılıyor
         StackTraceElement[] st = Thread.currentThread().getStackTrace();
         for (StackTraceElement s : st) {
             if (s.toString().contains("com.example.kemal.dao.UserDao")) {
-                if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
+                if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null && cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).get(s.toString()) != null) {
                     cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(s.toString(), true);
                     System.out.println("\u001B[32m" + s + " bulgusu Spring Cache'e doğrulanmamış olarak eklendi.\u001B[0m");
                 }
@@ -43,15 +47,18 @@ public class QueryCallerAspect {
 
     @Before("execution(* com.example.kemal.caller.QueryCaller.setIntParam(..))")
     public void beforeSetIntParam(JoinPoint joinPoint) {
+        // Field referansına yakın bir değer ile doğrulama yapılıyor
         if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
             Object param = joinPoint.getArgs()[0];
-            cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(System.identityHashCode(param), true);
+            if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).get(System.identityHashCode(param)) != null)
+                cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(System.identityHashCode(param), true);
         }
 
+        // StackTraceElement ile çağrım yapılan konum üzerinden doğrulama yapılıyor
         StackTraceElement[] st = Thread.currentThread().getStackTrace();
         for (StackTraceElement s : st) {
             if (s.toString().contains("com.example.kemal.dao.UserDao")) {
-                if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
+                if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null && cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).get(s.toString()) != null) {
                     cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(s.toString(), true);
                     System.out.println("\u001B[32m" + s + " bulgusu Spring Cache'e doğrulanmamış olarak eklendi.\u001B[0m");
                 }
