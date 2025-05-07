@@ -21,7 +21,6 @@ public class UserService {
     }
 
     public void saveUser(User user) {
-        User user1 = this.mockGenerator.getMockUser2();
-        userDao.saveUser(user, user1.getAge());
+        userDao.saveUser(user);
     }
 }

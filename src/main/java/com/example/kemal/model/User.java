@@ -32,6 +32,10 @@ public class User {
         this.password = password;
     }
 
+    @DataLifeCycle(
+            allowedDBs = {"ORACLE"},
+            allowedTables = {"USER"}
+    )
     public String getEmail() {
         return email;
     }

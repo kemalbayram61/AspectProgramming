@@ -27,14 +27,4 @@ public class MockGenerator {
         return user;
     }
 
-    public User getMockUser2() {
-        this.user2.setUsername("Kemal");
-        this.user2.setPassword("61");
-        this.user2.setEmail("kemalbayramag@gmail.com");
-        this.user2.setPhoneNumber("0661");
-        this.user2.setAge(28);
-        this.user2.setActive(true);
-        return user2;
-    }
-
 }

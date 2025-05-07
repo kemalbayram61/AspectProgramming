@@ -13,11 +13,12 @@ public class UserDao {
         this.queryCaller = queryCaller;
     }
 
-    public void saveUser(User user, Integer age) {
+    public void saveUser(User user) {
         String query = "INSERT INTO users (name, age) VALUES (?, ?)";
         if (user.isActive()) {
             queryCaller.setStringParam(user.getUsername());
-            queryCaller.setIntParam(age);
+            queryCaller.setStringParam(user.getEmail());
+            queryCaller.setIntParam(user.getAge());
             queryCaller.executeUpdate(query);
             System.out.println("User saved: " + user);
         }
