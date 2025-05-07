@@ -1,5 +1,6 @@
 package com.example.kemal.aspect;
 
+import com.example.kemal.cache.ObjectIdentityCache;
 import com.example.kemal.constant.CacheConstant;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,19 +19,20 @@ public class QueryCallerAspect {
     // Sorgu çalıştırılmadan önce DataLifeCycle annotasyonlu field kullanılmış mı teyit eiliyor
     @Before("execution(* com.example.kemal.caller.QueryCaller.executeUpdate(..))")
     public void beforeUpdateQuery() {
-        if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
+        if (ObjectIdentityCache.instance().isAnyTrue())
+            throw new RuntimeException("DataLifeCycle annotasyonu içeren bir field insert edilmeye çalışılıyor");
+
+        if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null)
             if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).getNativeCache().toString().contains("true"))
                 throw new RuntimeException("DataLifeCycle annotasyonu istenilmeyen bir şekilde insert edilmeye çalışılıyor.");
-        }
     }
 
     @Before("execution(* com.example.kemal.caller.QueryCaller.setStringParam(..))")
     public void beforeSetStringParam(JoinPoint joinPoint) {
         // Field referansına yakın bir değer ile doğrulama yapılıyor
-        if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
-            Object param = joinPoint.getArgs()[0];
-            if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).get(System.identityHashCode(param)) != null)
-                cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(System.identityHashCode(param), true);
+        Object param = joinPoint.getArgs()[0];
+        if (ObjectIdentityCache.instance().get(param) != null) {
+            ObjectIdentityCache.instance().put(param, true);
         }
 
         // StackTraceElement ile çağrım yapılan konum üzerinden doğrulama yapılıyor
@@ -48,10 +50,9 @@ public class QueryCallerAspect {
     @Before("execution(* com.example.kemal.caller.QueryCaller.setIntParam(..))")
     public void beforeSetIntParam(JoinPoint joinPoint) {
         // Field referansına yakın bir değer ile doğrulama yapılıyor
-        if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null) {
-            Object param = joinPoint.getArgs()[0];
-            if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).get(System.identityHashCode(param)) != null)
-                cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).put(System.identityHashCode(param), true);
+        Object param = joinPoint.getArgs()[0];
+        if (ObjectIdentityCache.instance().get(param) != null) {
+            ObjectIdentityCache.instance().put(param, true);
         }
 
         // StackTraceElement ile çağrım yapılan konum üzerinden doğrulama yapılıyor
