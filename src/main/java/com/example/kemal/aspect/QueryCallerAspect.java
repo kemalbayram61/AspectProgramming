@@ -20,11 +20,10 @@ public class QueryCallerAspect {
     @Before("execution(* com.example.kemal.caller.QueryCaller.executeUpdate(..))")
     public void beforeUpdateQuery() {
         if (ObjectIdentityCache.instance().isAnyTrue())
-            throw new RuntimeException("DataLifeCycle annotasyonu içeren bir field insert edilmeye çalışılıyor");
-
+            throw new RuntimeException("\u001B[31mDataLifeCycle annotasyonu içeren bir field insert edilmeye çalışılıyor\u001B[0m");
         if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE) != null)
             if (cacheManager.getCache(CacheConstant.DATA_LIFE_CYCLE_TRACE_CACHE).getNativeCache().toString().contains("true"))
-                throw new RuntimeException("DataLifeCycle annotasyonu istenilmeyen bir şekilde insert edilmeye çalışılıyor.");
+                throw new RuntimeException("\u001B[31mDataLifeCycle annotasyonu istenilmeyen bir şekilde insert edilmeye çalışılıyor.\u001B[0m");
     }
 
     @Before("execution(* com.example.kemal.caller.QueryCaller.setStringParam(..))")

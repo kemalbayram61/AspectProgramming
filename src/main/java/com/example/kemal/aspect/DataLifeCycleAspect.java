@@ -25,10 +25,10 @@ public class DataLifeCycleAspect {
     public void validateMethodReturnType(JoinPoint joinPoint) {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         if (method.getReturnType().equals(Void.TYPE)) {
-            throw new IllegalArgumentException("@DataLifeCycle annotasyonu void return type olan metotlarda kullanılamaz: " + method.getName());
+            throw new IllegalArgumentException("\u001B[31m@DataLifeCycle annotasyonu void return type olan metotlarda kullanılamaz: " + method.getName() + "\u001B[0m");
         }
         if (method.getReturnType().isPrimitive()) {
-            throw new IllegalArgumentException("@DataLifeCycle annotasyonu primitive data type return eden metotlarda kullanılamaz: " + method.getName());
+            throw new IllegalArgumentException("\u001B[31@DataLifeCycle annotasyonu primitive data type return eden metotlarda kullanılamaz: " + method.getName() + "\u001B[0m");
         }
     }
 
