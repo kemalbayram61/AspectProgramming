@@ -18,7 +18,7 @@ public class MockGenerator {
     }
 
     public User getMockUser() {
-        this.user.setUsername("Kemal");
+        this.user.setUsername(new String("Kemal"));
         this.user.setPassword("61");
         this.user.setEmail("kemalbayramag@gmail.com");
         this.user.setPhoneNumber("0661");

@@ -33,7 +33,6 @@ public class TestController {
     @PostMapping("/user")
     public void createUser(){
         User user = this.mockGenerator.getMockUser();
-        user.setEmail("Kemal");
         this.userService.saveUser(user);
     }
 
